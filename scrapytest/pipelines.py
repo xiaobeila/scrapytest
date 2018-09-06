@@ -15,7 +15,17 @@ class ScrapytestPipeline(object):
         self.cur = self.conn.cursor()
 
     def process_item(self, item, spider):
-        sql = 'INSERT INTO imooc_course (title) VALUES ("{}")'.format(item['title'])
+        print('|----------------------')
+        print(item)
+        print('----------------------|')
+        sql = 'INSERT INTO imooc_course (title,introduction,student,difficulty) VALUES ("{}","{}","{}","{}")'.format(
+            item['title'],
+            # item['url'],
+            # item['image_url'],
+            item['introduction'],
+            item['student'],
+            item['difficulty']
+        )
         self.cur.execute(sql)
         # 提交，不然无法保存新建或者修改的数据
         self.conn.commit()

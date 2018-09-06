@@ -4,18 +4,20 @@ import sys
 import time
 from ..items import ScrapytestItem
 from scrapy.selector import Selector
+
 sys.stdout = open('output.txt', 'w')
 pageIndex = 0
 
-class MySpider(scrapy.Spider):
 
-    #用于区别Spider
+class MySpider(scrapy.Spider):
+    # 用于区别Spider
     name = "MySpider"
-    #允许访问的域
+    # 允许访问的域
     allowed_domains = ['imooc.com']
-    #爬取的地址
+    # 爬取的地址
     start_urls = ["http://www.imooc.com/course/list"]
-    #爬取方法
+
+    # 爬取方法
     def parse(self, response):
 
         # 实例一个容器保存爬取的信息
@@ -27,26 +29,38 @@ class MySpider(scrapy.Spider):
         print(title[0])
         # sels = sel.xpath('//div[@class="course-card-content"]')
         sels = sel.xpath('//a[@class="course-card"]')
-       ## pictures = sel.xpath('//div[@class="course-card-bk"]')
+        ## pictures = sel.xpath('//div[@class="course-card-bk"]')
         index = 0
         global pageIndex
         pageIndex += 1
         print(u'%s' % (time.strftime('%Y-%m-%d %H-%M-%S')))
-        print('第' + str(pageIndex)+ '页 ')
+        print('第' + str(pageIndex) + '页 ')
         print('----------------------------------------------')
-
+        # // *[ @ id = "main"] / div[2] / div[2] / div[1] / div / div[7] / a / div[2] / div / div / span[2] / text()
         for box in sels:
-            #print ' '
+            print(' ')
             # 获取div中的课程标题
             item['title'] = box.xpath('.//h3[@class="course-card-name"]/text()').extract()[0].strip()
+            # item['url'] = 'http://www.imooc.com' + box.xpath('.//a[@class="course-card"]/@href').extract()[0].strip()
+            # item['image_url'] = box.xpath('.//img[@class="course-banner"]/@src').extract()[0].strip()
+            item['introduction'] = box.xpath('.//p[@class="course-card-desc"]/text()').extract()[0].strip()
+            item['student'] = box.xpath('.//div[@class="course-card-info"]/span[2]/text()').extract()[0].strip()
+            item['difficulty'] = box.xpath('.//div[@class="course-card-info"]/span[1]/text()').extract()[0].strip()
+            print('|----------------------')
             print(item['title'])
+            # print(item['url'])
+            print(item['image_url'])
+            print(item['introduction'])
+            print(item['student'])
+            print(item['difficulty'])
+            print('----------------------|')
 
             index += 1
             yield item
 
         time.sleep(1)
         print(u'%s' % (time.strftime('%Y-%m-%d %H-%M-%S')))
-        next =u'下一页'
+        next = u'下一页'
         url = response.xpath("//a[contains(text(),'" + next + "')]/@href").extract()
         if url:
             # 将信息组合成下一页的url
