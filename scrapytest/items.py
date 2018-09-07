@@ -16,4 +16,5 @@ class ScrapytestItem(scrapy.Item):
     introduction = scrapy.Field()
     student = scrapy.Field()
     difficulty = scrapy.Field()
+    category = scrapy.Field()
     #pass

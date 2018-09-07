@@ -14,3 +14,5 @@ class CourseItem(scrapy.Item):
     student = scrapy.Field()
     #难道
     difficulty = scrapy.Field()
+    #分类
+    category = scrapy.Field()

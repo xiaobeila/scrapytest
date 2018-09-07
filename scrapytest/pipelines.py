@@ -18,13 +18,14 @@ class ScrapytestPipeline(object):
         print('|----------------------')
         print(item)
         print('----------------------|')
-        sql = 'INSERT INTO imooc_course (title,introduction,student,difficulty) VALUES ("{}","{}","{}","{}")'.format(
+        sql = 'INSERT INTO imooc_course (title,url,image_url,introduction,student,difficulty,category) VALUES ("{}","{}","{}","{}","{}","{}","{}")'.format(
             item['title'],
-            # item['url'],
-            # item['image_url'],
+            item['url'],
+            item['image_url'],
             item['introduction'],
             item['student'],
-            item['difficulty']
+            item['difficulty'],
+            item['category']
         )
         self.cur.execute(sql)
         # 提交，不然无法保存新建或者修改的数据

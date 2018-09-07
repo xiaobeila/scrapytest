@@ -27,32 +27,32 @@ class MySpider(scrapy.Spider):
         sel = Selector(response)
         title = sel.xpath('/html/head/title/text()').extract()  # 标题
         print(title[0])
-        # sels = sel.xpath('//div[@class="course-card-content"]')
-        sels = sel.xpath('//a[@class="course-card"]')
-        ## pictures = sel.xpath('//div[@class="course-card-bk"]')
+        sels = sel.xpath('//div[@class="course-card-container"]')
         index = 0
         global pageIndex
         pageIndex += 1
         print(u'%s' % (time.strftime('%Y-%m-%d %H-%M-%S')))
         print('第' + str(pageIndex) + '页 ')
         print('----------------------------------------------')
-        # // *[ @ id = "main"] / div[2] / div[2] / div[1] / div / div[7] / a / div[2] / div / div / span[2] / text()
+
         for box in sels:
             print(' ')
             # 获取div中的课程标题
             item['title'] = box.xpath('.//h3[@class="course-card-name"]/text()').extract()[0].strip()
-            # item['url'] = 'http://www.imooc.com' + box.xpath('.//a[@class="course-card"]/@href').extract()[0].strip()
-            # item['image_url'] = box.xpath('.//img[@class="course-banner"]/@src').extract()[0].strip()
+            item['url'] = 'http://www.imooc.com' + box.xpath('.//a[@class="course-card"]/@href').extract()[0].strip()
+            item['image_url'] = box.xpath('.//img[@class="course-banner lazy"]/@src').extract()[0].strip()
             item['introduction'] = box.xpath('.//p[@class="course-card-desc"]/text()').extract()[0].strip()
             item['student'] = box.xpath('.//div[@class="course-card-info"]/span[2]/text()').extract()[0].strip()
             item['difficulty'] = box.xpath('.//div[@class="course-card-info"]/span[1]/text()').extract()[0].strip()
+            item['category'] = box.xpath('.//div[@class="course-label"]/label/text()').extract()[0].strip()
             print('|----------------------')
             print(item['title'])
-            # print(item['url'])
+            print(item['url'])
             print(item['image_url'])
             print(item['introduction'])
             print(item['student'])
             print(item['difficulty'])
+            print(item['category'])
             print('----------------------|')
 
             index += 1
