@@ -40,20 +40,11 @@ class MySpider(scrapy.Spider):
             # 获取div中的课程标题
             item['title'] = box.xpath('.//h3[@class="course-card-name"]/text()').extract()[0].strip()
             item['url'] = 'http://www.imooc.com' + box.xpath('.//a[@class="course-card"]/@href').extract()[0].strip()
-            item['image_url'] = box.xpath('.//img[@class="course-banner lazy"]/@src').extract()[0].strip()
+            item['image_url'] = 'http:' + box.xpath('.//img[@class="course-banner lazy"]/@src').extract()[0].strip()
             item['introduction'] = box.xpath('.//p[@class="course-card-desc"]/text()').extract()[0].strip()
             item['student'] = box.xpath('.//div[@class="course-card-info"]/span[2]/text()').extract()[0].strip()
             item['difficulty'] = box.xpath('.//div[@class="course-card-info"]/span[1]/text()').extract()[0].strip()
             item['category'] = box.xpath('.//div[@class="course-label"]/label/text()').extract()[0].strip()
-            print('|----------------------')
-            print(item['title'])
-            print(item['url'])
-            print(item['image_url'])
-            print(item['introduction'])
-            print(item['student'])
-            print(item['difficulty'])
-            print(item['category'])
-            print('----------------------|')
 
             index += 1
             yield item

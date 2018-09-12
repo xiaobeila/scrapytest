@@ -15,9 +15,7 @@ class ScrapytestPipeline(object):
         self.cur = self.conn.cursor()
 
     def process_item(self, item, spider):
-        print('|----------------------')
         print(item)
-        print('----------------------|')
         sql = 'INSERT INTO imooc_course (title,url,image_url,introduction,student,difficulty,category) VALUES ("{}","{}","{}","{}","{}","{}","{}")'.format(
             item['title'],
             item['url'],
